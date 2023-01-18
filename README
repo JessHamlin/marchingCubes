@@ -1,0 +1,63 @@
+CSCI 4239 Final Project: Marching Cubes
+
+Jess Hamlin
+CSCI4239/5239 Spring 2022
+
+Purpose: Create a program that uses the marching cubes algorithm
+To run: First run make, then ./final.exe
+
+I implemented the marching cubes algorithm into a fun cave exploration game.
+There are three modes to this program. The first mode is the cave exploring game.
+The last two modes show an example of how the marching cubes algorithm works, by building a 
+sphere one cube at a time without the use of shaders or interpolation. These modes are intended to 
+visually and intuitively show the step by step process of how complex shapes are made by the marching cubes algorithm.
+
+The game itself has quite a few features. I found a library for Simplex Noise that is used to generate a field of 
+floating point numbers that the marching cubes algorithm converts into cave like shapes. The game world is continuous and 
+you can move in a single direction for a long time as the program generates the 100^3 cubes around the player. 
+A geometry shader was used to implement the marching cubes algorithm. A fragment shader was used to texture 
+the caves using a procedural texture that made use of random noise and Fractional Brownian motion, sourced from the same
+website I got the Simplex Noise algorithm from. This texture changes as you go deeper into the caves. 
+
+Post processing was also implemented into this project to achieve a glowing bloom effect. 
+The goal of this game is to collect gold coins placed randomly in the caves, so the post processing was used 
+to create glowing gold crystals near the coins to direct the player to them. The coins teleport near the player if they 
+stray too far from them. 
+
+Additionally, the Simplex Noise offset was able to be shifted while the player was in the caves, making a moving cave or 
+earthquake effect. This was made to happen once every minute, with a camera shake effect.
+
+A fog like effect was also created so chunks of caves loading in would not be seen by the player. I tried very hard to 
+parameterize most important values in this program so they can be easily changed. Such parameters include the size of one cube
+in the marching cube algorithm, the size of one chunk of cubes, and how many chunks surround the player at any given time.
+The scale of the Simplex Noise can also be easily changed to make some massive cave systems. Overall I think I succeeded in 
+making this program flexible and easily altered.
+
+Furthermore, a physically based rendering technique was used in my fragment shader (basic.frag) that included per pixel lighting, 
+roughness, albedo, and metallic maps. 
+
+To handle player movement, first person controls were made and the marching cubes algorithm would see the player position as 
+always inside the mesh. This means the player cannot fall out of the world, and instead interacts with the cave walls to 
+carve out paths. 
+
+Those were all of my goals for this project, along with most of my stretch goals. Using WebGL was one of the only stretch goals not met, 
+which is understandable since it would require significantly changing this program. In the future making a website with this game on it 
+would be a enjoyable goal. 
+
+Key bindings
+    m = change mode
+    q = change animation speed
+    e = skip to end of animation
+    r = restart animation
+
+    arrow keys = looking
+    wasd = moving
+    page up and down = zooming
+
+    tab = instructions
+
+Sources:
+    https://gist.github.com/patriciogonzalezvivo/670c22f3966e662d2f83
+    http://paulbourke.net/geometry/polygonise/
+    http://www.icare3d.org/codes-and-projects/codes/opengl_geometry_shader_marching_cubes.html
+    https://www.youtube.com/watch?v=LfttaAepYJ8
